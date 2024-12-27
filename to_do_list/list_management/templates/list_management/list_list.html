@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Lists{% endblock %}
+{% block content %}
+    {# Headings demonstration #}
+    <h1>Main Heading (h1)</h1>
+    <h2>Sub Heading (h2)</h2>
+    <h3>Sub-sub Heading (h3)</h3>
+    <h4>Heading Level 4</h4>
+    <h5>Heading Level 5</h5>
+    <h6>Heading Level 6</h6>
+
+    {# Paragraph and text formatting #}
+    <p>This is a paragraph element. It contains text and can include <span class="highlighted-text">span elements</span> for inline styling.</p>
+
+    {# Links #}
+    <p>This is a <a href="https://www.example.com" class="link">hyperlink</a> to an example website.</p>
+
+    {# CSS box model example #}
+    <div class="box-model">
+        <p>This box demonstrates the CSS box model.</p>
+    </div>
+
+    {# Image #}
+    <img id="first-demo-image" class="demo-image" src="https://i.imgur.com/CzXTtJV.jpg" alt="Demo image 1">
+    <img class="demo-image" src="https://i.imgur.com/LW0NMQp.jpeg" alt="Demo image 2">
+
+    {# Div for grouping #}
+    <div class="content-section">
+        <h2>Lists Demonstration</h2>
+        
+        {# Unordered list #}
+        <ul class="custom-ul">
+            <li>Unordered list item 1</li>
+            <li>Unordered list item 2</li>
+            <li>Unordered list item 3</li>
+        </ul>
+
+        {# Ordered list #}
+        <ol class="custom-ol">
+            <li>First ordered item</li>
+            <li>Second ordered item</li>
+            <li>Third ordered item</li>
+        </ol>
+    </div>
+
+    {# Form elements #}
+    <form class="demo-form">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter username">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password">
+        </div>
+
+        <button type="button" onclick="showAlert()">Click Me!</button>
+    </form>
+
+    {# Element for pseudo-element demonstration #}
+    <p class="pseudo-demo">This paragraph demonstrates pseudo-elements</p>
+
+    {# test1 JavaScript demo #}
+    <h1>Pokémon Information Viewer</h1>
+    <input type="text" id="pokemon-input" placeholder="Enter Pokémon Name" />
+    <button id="search-button">Search</button>
+    <div id="pokemon-container"></div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    function showAlert() {
+        alert('Button clicked!');
+    }
+</script>
+
+{# test1 JavaScript demo #}
+<script type="module" src="{% static 'list_management/js/test1/main.js' %}"></script>
+{% endblock %}

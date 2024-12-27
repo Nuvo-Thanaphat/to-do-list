@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>{% block title %}{% endblock %} - To Do</title>
+   {% load static %}
+   {# Bootstrap CSS #}
+   <link rel="stylesheet" href="{% static 'list_management/vendor/bootstrap/bootstrap.min.css' %}">
+   {# Bootstrap Icons #}
+   <link rel="stylesheet" href="{% static 'list_management/vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+   {# Our own CSS #}
+   <link rel="stylesheet" href="{% static 'list_management/css/style.css' %}">
+</head>
+<body>
+   {% block content %}
+   {% endblock %}
+ 
+   {# Bootstrap JS #}
+   <script src="{% static 'list_management/vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+ 
+   {% block javascript %}
+   {% endblock %}
+</body>
+</html>
+ 

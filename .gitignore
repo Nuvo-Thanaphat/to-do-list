@@ -2,3 +2,5 @@
 .DS_Store
 # All __pycache__ directories
 __pycache__/
+# SQLite database
+/to_do_list/db.sqlite3

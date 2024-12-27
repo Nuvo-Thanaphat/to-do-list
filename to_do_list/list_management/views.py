@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.views import generic
+from .models import List
 
-# Create your views here.
+class IndexView(generic.ListView):
+    model = List
