@@ -1,146 +1,31 @@
-/* Basic Styling */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    padding: 20px;
-    background-color: #f0f0f0;
+/* Make the logo in navbar larger */
+nav .navbar-brand img {
+    height: 26px;
 }
 
-/* Heading Styles */
-h1, h2, h3, h4, h5, h6 {
-    color: #333;
-    margin-bottom: 15px;
-}
-
-h1 {
-    font-size: 32px;
-    border-bottom: 2px solid #333;
-}
-
-/* Paragraph Styles */
-p {
-    color: #666;
-    margin-bottom: 15px;
-}
-
-/* Span Styling */
-.highlighted-text {
-    background-color: #ffff00;
-    padding: 2px 5px;
-}
-
-/* Link Styling */
-.link {
-    color: #0066cc;
-    text-decoration: none;
-}
-
-.link:hover {
-    text-decoration: underline;
-    color: #003399;
-}
-
-/* CSS box model example styling */
-.box-model {
-    width: 200px;
-    padding: 10px;
-    border: 10px solid #000;
-    margin: 10px;
-    background-color: #fcd303;
-}
-
-/* Image Styling */
-.demo-image {
-    max-width: 10%;
-    border: 2px solid #ccc;
-    padding: 5px;
-    margin: 10px 0;
-}
-
-#first-demo-image {
+/* Fix Bootstrap issue and display .invalid-feedback inside an .input-group and sibling of .form-floating */
+.was-validated .input-group:has(.form-floating :invalid) > .invalid-feedback,
+.input-group:has(.form-floating .is-invalid) > .invalid-feedback {
     display: block;
 }
 
-/* Content Section Styling */
-.content-section {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 50px;
-    /* horizontal offset - vertical offset - blur - red, green, blue, and alpha (opacity) */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin: 20px 0;
+/* Alternate icons on button hover */
+.icon-btn .hover-icon {
+    display: none;
 }
 
-/* List Styling */
-.custom-ul {
-    list-style-type: square;
-    padding-left: 20px;
+.icon-btn:hover .normal-icon {
+    display: none;
 }
 
-.custom-ol {
-    background-color: #f8f8f8;
-    padding: 15px 40px;
-    border-left: 3px solid #333;
+.icon-btn:hover .hover-icon {
+    display: inline;
 }
 
-/* Form Styling */
-.demo-form {
-    background-color: #fff;
-    padding: 20px;
-    max-width: 400px;
+.small-font {
+    font-size: .875em;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-input[type="text"],
-input[type="password"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus {
-    border-color: #0066cc;
-    box-shadow: 0 0 5px rgba(0,102,204,0.3);
-}
-
-button {
-    background-color: #0066cc;
-    color: #fff;
-    padding: 10px 20px;
+.cursor-pointer{
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #003399;
-}
-
-/* Pseudo-element demonstration */
-.pseudo-demo::before {
-    content: "→ ";
-    color: #0066cc;
-}
-
-.pseudo-demo::after {
-    content: " ←";
-    color: #0066cc;
-}
-
-/* Example of combining selectors */
-.content-section h2 {
-    color: #0066cc;
-}
-
-/* Media query example */
-@media screen and (max-width: 600px) {
-    body {
-        padding: 10px;
-        background-color: #ccc;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-}
+  }

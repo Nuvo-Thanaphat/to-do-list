@@ -3,25 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - To Do</title>
+    <title>{% block title %}{% endblock title %} - To Do</title>
     {% load static %}
+    <link rel="icon" href="{% static 'list_management/images/to-do-logo.ico' %}">
+    {# Bootstrap CSS #}
+    <link rel="stylesheet" href="{% static 'list_management/vendor/bootstrap/bootstrap.min.css' %}">
+    {# Bootstrap Icons #}
+    <link rel="stylesheet" href="{% static 'list_management/vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+    {# Our own CSS #}
     <link rel="stylesheet" href="{% static 'list_management/css/style.css' %}">
-    <style>
-        {# Example of embedded styles #}
-        .embedded-style {
-            font-style: italic;
-        }
-    </style>
-
-    {# test1 JavaScript demo CSS #}
-    <link rel="stylesheet" href="{% static 'list_management/css/test1.css' %}">
-
 </head>
-<body>
-    {% block content %}
-    {% endblock %}
+<body class="mb-5">
+    {% url 'list_management:index' as myListsUrl %}
 
+    {# Navbar #}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ myListsUrl }}">
+                <img src="{% static 'list_management/images/to-do-logo.png' %}" alt="To Do logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a {% if request.path == myListsUrl %}class="nav-link active" aria-current="page"{% else %}class="nav-link"{% endif %}
+                          href="{{ myListsUrl }}">My Lists</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4">{% block contentTitle %}{% endblock contentTitle %}</h1>
+    {% block content %}
+    {% endblock content %}
+    </div>
+
+    {# Bootstrap JS #}
+    <script src="{% static 'list_management/vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    {# Own JS that runs on all pages #}
+    <script type="module" src="{% static 'list_management/js/main.js' %}"></script>
+    
     {% block javascript %}
-    {% endblock %}
+    {% endblock javascript %}
 </body>
 </html>

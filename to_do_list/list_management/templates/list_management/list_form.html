@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}My Lists{% endblock title %}
+
+{% block contentTitle %}To-do lists{% endblock contentTitle %}
+{% block content %}
+
+{# A form to add a to-do list #}
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="input-group mb-3 has-validation">
+        <button type="submit" class="btn btn-primary">Add List</button>
+        <div class="form-floating">
+            <input id="list-name-input" type="text" class="form-control" placeholder="Enter list name"
+                name="name" value="{{ form.name.value|default:'' }}" maxlength="255" required>
+            <label for="list-name-input">List name</label>
+        </div>
+        <div class="invalid-feedback">
+            Name is required
+        </div>
+
+        {% for error in form.name.errors %}
+        <div class="small-font text-danger w-100 mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+</form>
+
+{# Display all to-do lists #}
+<div class="list-group">
+    {% if lists %}
+
+    {% for list in lists %}
+    <a href="{{ list.get_absolute_url }}" class="list-group-item list-group-item-action">
+        {{ list }}
+    </a>
+    {% endfor %}
+
+    {% else %}
+    <div class="list-group-item text-center">
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> You have no to-do lists!
+            <br>
+            Add lists using the above form.
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

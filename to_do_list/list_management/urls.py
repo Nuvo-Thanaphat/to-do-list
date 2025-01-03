@@ -3,5 +3,6 @@ from . import views
 
 app_name = 'list_management' # Application URL namespace
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
+    path('list/<int:pk>/', views.ListDetailView.as_view(), name='list-detail'),
+    path('', views.ListIndex.as_view(), name='index'),
 ]

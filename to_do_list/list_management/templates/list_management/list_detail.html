@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}{{list}}{% endblock title %}
+
+{% block contentTitle %}{{list}}{% endblock contentTitle %}
+{% block content %}
+
+{# list delete modal #}
+<div id="list-delete-modal" class="modal fade" tabindex="-1" aria-labelledby="list-delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="list-delete-modal-label">List delete confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this to-do list?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirm-list-delete" type="button" class="btn btn-danger">Delete list</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# task delete modal #}
+<div id="task-delete-modal" class="modal fade" tabindex="-1" aria-labelledby="task-delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="task-delete-modal-label">Task delete confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this task?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirm-task-delete" type="button" class="btn btn-danger">Delete task</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# task offcanvas #}
+<div class="offcanvas offcanvas-end" tabindex="-1" id="taskOffcanvas" aria-labelledby="taskOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="taskOffcanvasLabel">Task Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        {# Update Task Form #}
+        <form method="post" class="needs-validation mb-3" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="update_task">
+            <input type="hidden" name="task_id" id="taskIdInput">
+
+            <div class="form-floating mb-3">
+                <input id="descriptionInput" type="text" class="form-control" placeholder="Enter task description"
+                    name="description" maxlength="255" required>
+                <label for="descriptionInput">Task description</label>
+        
+                <div class="invalid-feedback">
+                    Description is required
+                </div>
+            </div>
+        
+            <div class="form-floating mb-3">
+                <input id="dueDateInput" type="date" class="form-control" placeholder="Enter task due date" name="due_date">
+                <label for="dueDateInput">Task due date (optional)</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Task</button>
+        </form>
+
+        {# Delete Task Form #}
+        <form id="task-delete-form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="delete_task">
+            <input type="hidden" name="task_id" id="deleteTaskIdInput">
+            <button type="submit" class="btn btn-link p-0 border border-0 icon-btn"
+                data-bs-toggle="tooltip" data-bs-title="Delete task">
+                <i class="bi bi-trash3 text-danger normal-icon"></i>
+                <i class="bi bi-trash3-fill text-danger hover-icon"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+{# A form to delete the current to-do list #}
+<form id="list-delete-form" method="post" class="d-inline-block mb-2">
+    {% csrf_token %}
+    <input type="hidden" name="delete_list">
+    <button type="submit" class="btn btn-link p-0 border border-0 icon-btn"
+        data-bs-toggle="tooltip" data-bs-title="Delete list">
+        <i class="bi bi-trash3 text-danger normal-icon"></i>
+        <i class="bi bi-trash3-fill text-danger hover-icon"></i>
+    </button>
+</form>
+
+{# A form to update the name of the current to-do list #}
+<form method="post" class="needs-validation mb-4" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="update_list_name">
+    <div class="input-group mb-3 has-validation">
+        <button type="submit" class="btn btn-primary">Update List Name</button>
+        <div class="form-floating">
+            <input id="list-name-edit-input" type="text" class="form-control" placeholder="Enter list name"
+                name="name" value="{{ list_form.name.value }}" maxlength="255" required>
+            <label for="list-name-edit-input">List name</label>
+        </div>
+        <div class="invalid-feedback">
+            Name is required
+        </div>
+
+        {% for error in list_form.name.errors %}
+        <div class="small-font text-danger w-100 mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+</form>
+
+<h2 class="mb-3">Tasks</h2>
+
+{# A form to add a task to the current to-do list #}
+<form method="post" class="needs-validation mb-3" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="add_task">
+
+    <div class="form-floating mb-3">
+        <input id="task-desc-input" type="text" class="form-control" placeholder="Enter task description"
+            name="description" value="{{ task_form.description.value|default:'' }}" maxlength="255" required>
+        <label for="task-desc-input">Task description</label>
+
+        <div class="invalid-feedback">
+            Description is required
+        </div>
+
+        {% for error in task_form.description.errors %}
+        <div class="small-font text-danger w-100 mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="form-floating mb-3">
+        <input id="task-due-date-input" type="date" class="form-control" placeholder="Enter task due date"
+            name="due_date" value="{{ task_form.due_date.value|default:'' }}">
+        <label for="task-due-date-input">Task due date (optional)</label>
+
+        {% for error in task_form.due_date.errors %}
+        <div class="small-font text-danger w-100 mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Task</button>
+</form>
+
+{# Display all tasks of the current list #}
+<div class="list-group">
+    {% if tasks %}
+
+    {% for task in tasks %}
+    <div class="d-flex align-items-center">
+        <form method="post" class="task-status-form">
+            {% csrf_token %}
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <input type="hidden" name="update_task_status">
+            <input name="completed" class="form-check-input me-2 cursor-pointer task-checkbox" type="checkbox"
+                {% if task.completed %}checked{% endif %}
+                data-bs-toggle="tooltip" data-bs-title="Toggle completed status">
+        </form>
+        <a href="#taskOffcanvas" class="list-group-item list-group-item-action" data-bs-toggle="offcanvas"
+            data-task-id="{{ task.id }}"
+            data-task-description="{{ task.description }}"
+            data-task-due-date="{{ task.due_date|date:'Y-m-d'|default:'' }}">
+            {{ task }}
+        </a>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <div class="list-group-item text-center">
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> You have no tasks in this list!
+            <br>
+            Add tasks using the above form.
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script type="module" src="{% static 'list_management/js/list-detail/main.js' %}"></script>
+
+<script>
+    // If there are form errors, show the offcanvas and populate it
+    {% if task_update_forms %}
+        {% for task in tasks %}
+            {% with form=task_update_forms|get_dict_item:task.id %}
+                {% if form.errors %}
+                    const offcanvas = new bootstrap.Offcanvas(document.getElementById('taskOffcanvas'));
+                    
+                    // Populate form fields
+                    document.getElementById('taskIdInput').value = '{{ task.id }}';
+                    document.getElementById('deleteTaskIdInput').value = '{{ task.id }}';
+                    document.getElementById('descriptionInput').value = '{{ form.description.value|default:task.description|escapejs }}';
+                    document.getElementById('dueDateInput').value = '{{ form.due_date.value|date:"Y-m-d"|default:task.due_date|date:"Y-m-d"|default:"" }}';
+
+                    // Show validation errors
+                    const descriptionContainer = document.getElementById('descriptionInput').closest('.form-floating');
+                    const dueDateContainer = document.getElementById('dueDateInput').closest('.form-floating');
+                    let errorDiv;
+                    {% for error in form.description.errors %}
+                        errorDiv = document.createElement('div');
+                        errorDiv.className = 'small-font text-danger w-100 mt-1';
+                        errorDiv.textContent = '{{ error|escapejs }}';
+                        descriptionContainer.appendChild(errorDiv);
+                    {% endfor %}
+            
+                    {% for error in form.due_date.errors %}
+                        errorDiv = document.createElement('div');
+                        errorDiv.className = 'small-font text-danger w-100 mt-1';
+                        errorDiv.textContent = '{{ error|escapejs }}';
+                        dueDateContainer.appendChild(errorDiv);
+                    {% endfor %}
+
+                    offcanvas.show();
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    {% endif %}
+</script>
+
+{% endblock javascript %}
