@@ -4,10 +4,9 @@ This is a to-do-list manager made using django and bootstrap
  
 ## Features
  
-EXPLAIN WHAT FEATURES AND FUNCTIONALITIES YOUR APPLICATION HAS
-(For example ability to manage multiple lists, user login,
-responsive (mobile-friendly) interface design, etc.)
- 
+- manage multiple lists
+- manage multiple tasks per list
+
 ## System requirements
  
 - Python version 3.10, 3.11, 3.12 or 3.13
